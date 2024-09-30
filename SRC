@@ -1,0 +1,52 @@
+CREATE DATABASE RestauranteDB;
+
+USE RestauranteDB;
+
+
+CREATE TABLE Clientes (
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    telefone VARCHAR(15),
+    email VARCHAR(100)
+);
+
+CREATE TABLE Mesas (
+    id_mesa INT AUTO_INCREMENT PRIMARY KEY,
+    numero_mesa INT NOT NULL,
+    capacidade INT NOT NULL
+);
+
+CREATE TABLE Pedidos (
+    id_pedido INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    id_mesa INT,
+    data_pedido DATETIME NOT NULL,
+    total DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+    FOREIGN KEY (id_mesa) REFERENCES Mesas(id_mesa)
+);
+
+CREATE TABLE Itens_Pedido (
+    id_item INT AUTO_INCREMENT PRIMARY KEY,
+    id_pedido INT,
+    descricao_item VARCHAR(255) NOT NULL,
+    quantidade INT NOT NULL,
+    preco_unitario DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (id_pedido) REFERENCES Pedidos(id_pedido) ON DELETE CASCADE
+);
+
+INSERT INTO Clientes (nome, telefone, email) VALUES 
+('Joao Silva', '123456789', 'joao.silva@example.com'),
+('Maria Oliveira', '987654321', 'maria.oliveira@example.com');
+
+INSERT INTO Mesas (numero_mesa, capacidade) VALUES 
+(1, 4),
+(2, 2);
+
+INSERT INTO Pedidos (id_cliente, id_mesa, data_pedido, total) VALUES 
+(1, 1, NOW(), 100.50),
+(2, 2, NOW(), 45.00);
+
+INSERT INTO Itens_Pedido (id_pedido, descricao_item, quantidade, preco_unitario) VALUES 
+(1, 'Pizza', 2, 35.25),
+(2, 'Suco', 1, 10.00);
